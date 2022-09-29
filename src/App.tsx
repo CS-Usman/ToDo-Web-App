@@ -2,7 +2,7 @@ import React, { useState,createContext } from 'react';
 import {AiOutlinePlus,AiFillDelete,AiOutlineArrowUp,AiOutlineArrowDown} from "react-icons/ai";
 import './App.css';
 import ReactSwitch from "react-switch";
-export const ThemeContext = createContext(null);
+const ThemeContext = createContext({});
 
 const App:React.FC= () =>{
   
@@ -40,32 +40,35 @@ const App:React.FC= () =>{
   }
 
   return (
+    
       <div className='App' id ={theme}>
-      <h1>TODO App</h1>
-        <div className="switch">
-            <label>{theme === "light" ? "Light Mode" :"Dark Mode"}</label>
-            <ReactSwitch onChange={toggleTheme} height ={20} width={40}checked={theme === "dark"}/>
-        </div>
-        <div className='title' placeholder='Enter Item'><p>Items</p>
-          <button onClick={handleClick}><AiOutlinePlus/></button>
-        </div>
-        
-        <div>{items.map((item,index)=>(
-          <div key = {index} className='items'>
-            <p contentEditable='true'>{item}{" "}</p>
-            <div>
-              <button onClick={()=>{
-                deleteItem(index);
-              }}><AiFillDelete /></button>
-              <button onClick={()=>{
-                move(index,(index)-1)
-              }}><AiOutlineArrowUp /></button>
-              <button onClick={()=>{
-                move(index,(index)+1)
-              }}><AiOutlineArrowDown /></button>
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+          <h1>TODO App</h1>
+            <div className="switch">
+                <label>{theme === "light" ? "Light Mode" :"Dark Mode"}</label>
+                <ReactSwitch onChange={toggleTheme} height ={20} width={40}checked={theme === "dark"}/>
             </div>
-        </div>
-        ))}</div>
+            <div className='title' placeholder='Enter Item'><p>Items</p>
+              <button onClick={handleClick}><AiOutlinePlus/></button>
+            </div>
+            
+            <div>{items.map((item,index)=>(
+              <div key = {index} className='items'>
+                <p contentEditable='true'>{item ? item:"Enter Item"}</p>
+                <div>
+                  <button onClick={()=>{
+                    deleteItem(index);
+                  }}><AiFillDelete /></button>
+                  <button onClick={()=>{
+                    move(index,(index)-1)
+                  }}><AiOutlineArrowUp /></button>
+                  <button onClick={()=>{
+                    move(index,(index)+1)
+                  }}><AiOutlineArrowDown /></button>
+                </div>
+            </div>
+            ))}</div>
+        </ThemeContext.Provider>
       </div>
   );
 }
